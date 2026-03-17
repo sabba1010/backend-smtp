@@ -382,6 +382,10 @@ function makeAttachments(data) {
   ];
 }
 
+app.get('/', (req, res) => {
+  res.send('Care Connection Email Backend is running!');
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
