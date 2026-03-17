@@ -145,14 +145,17 @@ function makePlainText(data) {
   add('Previous dismissal', data.previousDismissal);
   add('Previous dismissal details', data.previousDismissalDetails);
 
+  add('Criminal record status', data.hasCriminalRecord);
+  add('Criminal record details', data.criminalRecordDetails);
+  add('DBS check status', data.hasDBSCheck);
+  add('DBS details', data.dbsDetails);
+
   add('Declaration sign name', data.declarationSignName);
   add('Declaration print name', data.declarationPrintName);
   add('Declaration date', data.declarationDate);
   add('Understand sign name', data.understandSignName);
   add('Understand print name', data.understandPrintName);
   add('Understand date', data.understandDate);
-
-  add('CV file name', data.cvFileName);
 
   return rows.join('\n');
 }
@@ -323,6 +326,10 @@ function makeHtml(data) {
       row('Disciplinary sanction details', data.disciplinarySanctionDetails),
       row('Previous dismissal', data.previousDismissal),
       row('Previous dismissal details', data.previousDismissalDetails),
+      row('Criminal record status', data.hasCriminalRecord),
+      row('Criminal record details', data.criminalRecordDetails),
+      row('DBS check status', data.hasDBSCheck),
+      row('DBS details', data.dbsDetails),
     ]),
   );
 
@@ -334,12 +341,6 @@ function makeHtml(data) {
       row('Understand sign name', data.understandSignName),
       row('Understand print name', data.understandPrintName),
       row('Understand date', data.understandDate),
-    ]),
-  );
-
-  parts.push(
-    section('CV', [
-      row('CV file name', data.cvFileName),
     ]),
   );
 
@@ -388,9 +389,17 @@ app.get('/api/health', (req, res) => {
 app.post('/api/send-email', async (req, res) => {
   const data = req.body;
 
-  if (!data || !data.cvFileData) {
-    return res.status(400).json({ success: false, error: 'Missing form data or CV attachment.' });
+  if (!data) {
+    return res.status(400).json({ success: false, error: 'Missing form data.' });
   }
+
+  console.log('send-email payload:', {
+    positionAppliedFor: data.positionAppliedFor,
+    hasCriminalRecord: data.hasCriminalRecord,
+    criminalRecordDetails: data.criminalRecordDetails,
+    hasDBSCheck: data.hasDBSCheck,
+    dbsDetails: data.dbsDetails,
+  });
 
   const from = process.env.EMAIL_FROM || process.env.EMAIL_USER;
   const to = process.env.EMAIL_TO;
@@ -416,6 +425,16 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Email backend listening on http://localhost:${port}`);
+});
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${port} is already in use. Try setting a different port, e.g. PORT=3001 npm start`);
+    process.exit(1);
+  }
+
+  console.error('Server error:', err);
+  process.exit(1);
 });
