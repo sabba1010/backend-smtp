@@ -425,16 +425,20 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-const server = app.listen(port, () => {
-  console.log(`Email backend listening on http://localhost:${port}`);
-});
+if (require.main === module) {
+  const server = app.listen(port, () => {
+    console.log(`Email backend listening on http://localhost:${port}`);
+  });
 
-server.on('error', (err) => {
-  if (err.code === 'EADDRINUSE') {
-    console.error(`Port ${port} is already in use. Try setting a different port, e.g. PORT=3001 npm start`);
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`Port ${port} is already in use. Try setting a different port, e.g. PORT=3001 npm start`);
+      process.exit(1);
+    }
+
+    console.error('Server error:', err);
     process.exit(1);
-  }
+  });
+}
 
-  console.error('Server error:', err);
-  process.exit(1);
-});
+module.exports = app;
