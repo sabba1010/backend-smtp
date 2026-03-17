@@ -436,7 +436,7 @@ if (require.main === module) {
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      console.error(`Port ${port} is already in use. Try setting a different port, e.g. PORT=3001 npm start`);
+      console.error(`Port ${port} is already in use. Try setting a different port, e.g. PORT=3000 npm start`);
       process.exit(1);
     }
 
@@ -445,4 +445,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = app;
+module.exports = app;
