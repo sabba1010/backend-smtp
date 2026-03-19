@@ -580,6 +580,7 @@ function makePlainText(data) {
 
   add('Statutory conditions', data.statutoryConditions);
   add('Statutory conditions details', data.statutoryConditionsDetails);
+  add('Secondary & further education', data.secondaryFurtherEducation);
   add('Reason for applying', data.reasonForApplying);
 
   add('Driving license', data.drivingLicense);
@@ -596,10 +597,12 @@ function makePlainText(data) {
   add('Previous dismissal', data.previousDismissal);
   add('Previous dismissal details', data.previousDismissalDetails);
 
-  add('Criminal record status', data.hasCriminalRecord);
+  add('Criminal record status', data.unspentConvictions);
   add('Criminal record details', data.criminalRecordDetails);
   add('DBS check status', data.hasDBSCheck);
   add('DBS details', data.dbsDetails);
+  add('Health and fitness', data.healthFitness);
+  add('Health and fitness details', data.healthFitnessDetails);
 
   add('Declaration sign name', data.declarationSignName);
   add('Declaration print name', data.declarationPrintName);
@@ -757,6 +760,12 @@ function makeHtml(data) {
   );
 
   parts.push(
+    section('Education Details', [
+      row('Secondary & further education', data.secondaryFurtherEducation),
+    ]),
+  );
+
+  parts.push(
     section('Reason for applying', [
       row('Reason for applying', data.reasonForApplying),
     ]),
@@ -777,10 +786,12 @@ function makeHtml(data) {
       row('Disciplinary sanction details', data.disciplinarySanctionDetails),
       row('Previous dismissal', data.previousDismissal),
       row('Previous dismissal details', data.previousDismissalDetails),
-      row('Criminal record status', data.hasCriminalRecord),
+      row('Criminal record status', data.unspentConvictions),
       row('Criminal record details', data.criminalRecordDetails),
       row('DBS check status', data.hasDBSCheck),
       row('DBS details', data.dbsDetails),
+      row('Health and fitness', data.healthFitness),
+      row('Health and fitness details', data.healthFitnessDetails),
     ]),
   );
 
@@ -850,7 +861,7 @@ app.post('/api/send-email', async (req, res) => {
 
   console.log('send-email payload:', {
     positionAppliedFor: data.positionAppliedFor,
-    hasCriminalRecord: data.hasCriminalRecord,
+    unspentConvictions: data.unspentConvictions,
     criminalRecordDetails: data.criminalRecordDetails,
     hasDBSCheck: data.hasDBSCheck,
     dbsDetails: data.dbsDetails,
