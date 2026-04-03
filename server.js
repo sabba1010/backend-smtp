@@ -554,6 +554,7 @@ function makePlainText(data) {
   if (Array.isArray(data.educations)) {
     data.educations.forEach((education, idx) => {
       rows.push(`\nEducation #${idx + 1}`);
+      add('  Secondary and further education', education.secondaryFurtherEducation);
       add('  From', education.dateFrom);
       add('  To', education.dateTo);
       add('  Qualifications', education.qualifications);
@@ -580,7 +581,6 @@ function makePlainText(data) {
 
   add('Statutory conditions', data.statutoryConditions);
   add('Statutory conditions details', data.statutoryConditionsDetails);
-  add('Secondary & further education', data.secondaryFurtherEducation);
   add('Reason for applying', data.reasonForApplying);
 
   add('Driving license', data.drivingLicense);
@@ -720,6 +720,7 @@ function makeHtml(data) {
     data.educations.forEach((education, idx) => {
       parts.push(
         section(`Education ${idx + 1}`, [
+          row('Secondary and further education', education.secondaryFurtherEducation),
           row('From', education.dateFrom),
           row('To', education.dateTo),
           row('Qualifications', education.qualifications),
@@ -756,12 +757,6 @@ function makeHtml(data) {
     section('Statutory conditions', [
       row('Statutory conditions', data.statutoryConditions),
       row('Statutory conditions details', data.statutoryConditionsDetails),
-    ]),
-  );
-
-  parts.push(
-    section('Education Details', [
-      row('Secondary & further education', data.secondaryFurtherEducation),
     ]),
   );
 
