@@ -5,8 +5,8 @@
   "description": "Backend for Care Connection application form email submission",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node api.js && node server.js",
+    "dev": "node api.js && nodemon server.js"
   },
   "dependencies": {
     "cors": "^2.8.5",
